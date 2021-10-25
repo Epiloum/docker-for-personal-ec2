@@ -1,0 +1,56 @@
+version: '3'
+services:
+
+  #PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+      args:
+        user: app
+        uid: 1000
+    image: php:7.4-fpm
+    container_name: app
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www
+    volumes:
+      - ${PATH_BLOG}:/var/www
+      - ./conf/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - network-blog
+
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 42080:80
+      - 42043:443
+    volumes:
+      - ${PATH_BLOG}:/var/www
+      - ./conf/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - network-blog
+
+  #PHP MyAdmin - web GUI tool for MySQL
+  myadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: myadmin
+    ports:
+      - 49080:80
+    environment:
+      UPLOAD_LIMIT: 1024M
+      PMA_HOST: mysql
+    volumes:
+      - ./.docker/mysql/data:/var/lib/mysql/data
+      - ./.docker/mysql/conf/my.cnf:/etc/mysql/conf/my.cnf
+    networks:
+      - network-blog
+
+#Docker Networks
+networks:
+  network-blog:
+    driver: bridge
