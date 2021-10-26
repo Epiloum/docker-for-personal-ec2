@@ -22,6 +22,7 @@ services:
     volumes:
       - ${PATH_BIBLE}:/var/www
       - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./.docker/php/local.conf:/usr/local/etc/php-fpm.d/local.conf
     networks:
       - overlay
       - inside
@@ -62,6 +63,7 @@ services:
     volumes:
       - ${PATH_BIBLE_DEV}:/var/www
       - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./.docker/php/local.conf:/usr/local/etc/php-fpm.d/local.conf
     networks:
       - overlay
       - inside
