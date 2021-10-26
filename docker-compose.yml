@@ -5,7 +5,7 @@ services:
   blog_fpm:
     build:
       context: .
-      dockerfile: php.dockerfile
+      dockerfile: php74.dockerfile
       args:
         user: blog
         uid: 1000
