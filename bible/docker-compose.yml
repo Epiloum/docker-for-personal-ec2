@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
   #Production PHP Service
-  bible_app_prod:
+  app_prod:
     build:
       context: .
       dockerfile: ../dockerfiles/php80.dockerfile
@@ -12,7 +12,6 @@ services:
     deploy:
       replicas: 1
       endpoint_mode: dnsrr
-    container_name: app_prod
     restart: unless-stopped
     tty: true
     user: root
@@ -26,12 +25,11 @@ services:
       - inside
 
   #Production Nginx Service
-  bible_web_prod:
+  nginx_prod:
     image: nginx:alpine
     deploy:
       replicas: 1
       endpoint_mode: dnsrr
-    container_name: nginx_prod
     restart: unless-stopped
     tty: true
     volumes:
@@ -42,14 +40,13 @@ services:
       - inside
 
   #Production PHP Service
-  bible_app_dev:
+  app_dev:
     build:
       context: .
       dockerfile: ../dockerfiles/php80.dockerfile
       args:
         user: bible
         uid: 1000
-    container_name: app_dev
     restart: unless-stopped
     tty: true
     user: root
@@ -63,9 +60,8 @@ services:
       - inside
 
   #Production Nginx Service
-  bible_web_dev:
+  nginx_dev:
     image: nginx:alpine
-    container_name: nginx_dev
     restart: unless-stopped
     tty: true
     volumes:
