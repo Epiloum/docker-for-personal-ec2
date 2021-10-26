@@ -1,0 +1,103 @@
+version: '3.8'
+services:
+
+  #Production PHP Service
+  bible_app_prod:
+    build:
+      context: .
+      dockerfile: ../dockerfiles/php80.dockerfile
+      args:
+        user: bible
+        uid: 1000
+    depends_on:
+      - proxy
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+    container_name: app_prod
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www/public
+    volumes:
+      - ${PATH_BIBLE}:/var/www
+      - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - webnetwork
+
+  #Production Nginx Service
+  bible_web_prod:
+    image: nginx:alpine
+    depends_on:
+      - proxy
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+    container_name: nginx_prod
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ${PATH_BIBLE}:/var/www
+      - ./.docker/nginx/conf.production/:/etc/nginx/conf.d/
+    networks:
+      - webnetwork
+
+  #Production PHP Service
+  bible_app_dev:
+    build:
+      context: .
+      dockerfile: ../dockerfiles/php80.dockerfile
+      args:
+        user: bible
+        uid: 1000
+    depends_on:
+      - proxy
+    container_name: app_dev
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www/public
+    volumes:
+      - ${PATH_BIBLE_DEV}:/var/www
+      - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - webnetwork
+
+  #Production Nginx Service
+  bible_web_dev:
+    image: nginx:alpine
+    depends_on:
+      - proxy
+    container_name: nginx_dev
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ${PATH_BIBLE_DEV}:/var/www
+      - ./.docker/nginx/conf.development/:/etc/nginx/conf.d/
+    networks:
+      - webnetwork
+
+  #Haproxy
+  proxy:
+    build:
+      context: ./.docker/haproxy
+      dockerfile: ../../../dockerfiles/haproxy.dockerfile
+    deploy:
+      mode: global
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: 443
+        protocol: tcp
+        mode: host
+    dns: 127.0.0.11
+    networks:
+      - webnetwork
+
+#Docker Networks
+networks:
+  webnetwork:
+    driver: overlay
+    attachable: true
+  mynet:
