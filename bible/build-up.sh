@@ -30,6 +30,16 @@ sleep 3
 docker exec $(docker ps -aqf "name=app_dev") composer install
 docker exec $(docker ps -aqf "name=app_dev") chmod -R +x /var/www/vendor
 docker exec $(docker ps -aqf "name=app_dev") chmod -R 777 /var/www/storage
+docker exec $(docker ps -aqf "name=app_dev") php artisan key:generate
+docker exec $(docker ps -aqf "name=app_dev") php artisan passport:keys
+docker exec $(docker ps -aqf "name=app_dev") php artisan storage:link
+
 docker exec $(docker ps -aqf "name=app_prod") composer install
 docker exec $(docker ps -aqf "name=app_prod") chmod -R +x /var/www/vendor
 docker exec $(docker ps -aqf "name=app_prod") chmod -R 777 /var/www/storage
+docker exec $(docker ps -aqf "name=app_prod") php artisan key:generate
+docker exec $(docker ps -aqf "name=app_prod") php artisan passport:keys
+docker exec $(docker ps -aqf "name=app_prod") php artisan storage:link
+
+
+
