@@ -18,6 +18,7 @@ services:
     working_dir: /var/www
     volumes:
       - ${PATH_BIBLE}:/var/www
+      - ./.docker/laravel/.env:/var/www/.env
       - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
       - ./.docker/php/local.conf:/usr/local/etc/php-fpm.d/local.conf
     networks:
@@ -53,6 +54,7 @@ services:
     working_dir: /var/www
     volumes:
       - ${PATH_BIBLE_DEV}:/var/www
+      - ./.docker/laravel/.env:/var/www/.env
       - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
       - ./.docker/php/local.conf:/usr/local/etc/php-fpm.d/local.conf
     networks:
