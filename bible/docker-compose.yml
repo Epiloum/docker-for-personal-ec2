@@ -17,7 +17,7 @@ services:
     container_name: app_prod
     restart: unless-stopped
     tty: true
-    working_dir: /var/www/public
+    working_dir: /var/www
     volumes:
       - ${PATH_BIBLE}:/var/www
       - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
@@ -54,7 +54,7 @@ services:
     container_name: app_dev
     restart: unless-stopped
     tty: true
-    working_dir: /var/www/public
+    working_dir: /var/www
     volumes:
       - ${PATH_BIBLE_DEV}:/var/www
       - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
