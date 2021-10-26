@@ -23,7 +23,8 @@ services:
       - ${PATH_BIBLE}:/var/www
       - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
-      - webnetwork
+      - overlay
+      - inside
 
   #Production Nginx Service
   bible_web_prod:
@@ -40,7 +41,8 @@ services:
       - ${PATH_BIBLE}:/var/www
       - ./.docker/nginx/conf.production/:/etc/nginx/conf.d/
     networks:
-      - webnetwork
+      - overlay
+      - inside
 
   #Production PHP Service
   bible_app_dev:
@@ -61,7 +63,8 @@ services:
       - ${PATH_BIBLE_DEV}:/var/www
       - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
-      - webnetwork
+      - overlay
+      - inside
 
   #Production Nginx Service
   bible_web_dev:
@@ -75,7 +78,8 @@ services:
       - ${PATH_BIBLE_DEV}:/var/www
       - ./.docker/nginx/conf.development/:/etc/nginx/conf.d/
     networks:
-      - webnetwork
+      - overlay
+      - inside
 
   #Haproxy
   proxy:
@@ -95,11 +99,12 @@ services:
         mode: host
     dns: 127.0.0.11
     networks:
-      - webnetwork
+      - overlay
 
 #Docker Networks
 networks:
-  webnetwork:
+  overlay:
     driver: overlay
     attachable: true
-  mynet:
+  inside:
+    driver: bridge    
