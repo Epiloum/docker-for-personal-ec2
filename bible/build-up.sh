@@ -16,4 +16,6 @@ sleep 3
 
 # composer install
 docker exec $(docker ps -aqf "name=app_dev") composer install
+docker exec $(docker ps -aqf "name=app_dev") chmod -R +x /var/www/vendor
 docker exec $(docker ps -aqf "name=app_prod") composer install
+docker exec $(docker ps -aqf "name=app_prod") chmod -R +x /var/www/vendor
