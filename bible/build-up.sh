@@ -1,20 +1,32 @@
 #!/bin/bash
 
 # build
+echo "---------------------------"
+echo "   Docker-compose Build"
+echo "==========================="
 docker-compose build --no-cache
-sleep 3
 
 # deploy by temporary configuration file
+echo "---------------------------"
+echo "    Docker Stack Deploy"
+echo "==========================="
+sleep 3
 docker-compose config -f docker-compose.yml > docker-compose-out.yml
 docker stack deploy -c docker-compose-out.yml bible
 rm docker-compose-out.yml
-sleep 3
 
 # up
-docker-compose up -d
+echo "---------------------------"
+echo "     Docker-compose Up"
+echo "==========================="
 sleep 3
+docker-compose up -d
 
 # composer install
+echo "---------------------------"
+echo "     Composer Install"
+echo "==========================="
+sleep 3
 docker exec $(docker ps -aqf "name=app_dev") composer install
 docker exec $(docker ps -aqf "name=app_dev") chmod -R +x /var/www/vendor
 docker exec $(docker ps -aqf "name=app_prod") composer install
