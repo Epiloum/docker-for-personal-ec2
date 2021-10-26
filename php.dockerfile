@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:8.0.12-fpm-alpine3.14
 
 # Arguments defined in docker-compose.yml
 ARG user
@@ -8,54 +8,19 @@ ARG uid
 USER root
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip
-
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apk update && apk add vim \
+	bash \
+	curl
 
 # Install PHP extensions
-RUN docker-php-ext-install mysqli pdo pdo_mysql mbstring exif pcntl bcmath gd
-RUN pecl install xdebug
-RUN zend_extension=xdebug.so
-
-# Install Xdebug
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
-WORKDIR /usr/local/etc/php/conf.d/
-RUN touch local.ini \
-    && echo "xdebug.remote_host=host.docker.internal" >> local.ini \
-    && echo "xdebug.remote_connect_back=1" >> local.ini \
-    && echo "xdebug.remote_port=9000" >> local.ini \
-    && echo "xdebug.idekey=PHPSTORM" >> local.ini \
-    && echo "xdebug.cli_color=1" >> local.ini \
-    && echo "xdebug.remote_handler=dbgp" >> local.ini \
-    && echo "xdebug.remote_mode=req" >> local.ini
-
-# Install Xdebug
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
-WORKDIR /usr/local/etc/php/conf.d/
-RUN touch local.ini \
-    && echo "xdebug.remote_host=host.docker.internal" >> local.ini \
-    && echo "xdebug.remote_connect_back=1" >> local.ini \
-    && echo "xdebug.remote_port=9000" >> local.ini \
-    && echo "xdebug.idekey=PHPSTORM" >> local.ini \
-    && echo "xdebug.cli_color=1" >> local.ini \
-    && echo "xdebug.remote_handler=dbgp" >> local.ini \
-    && echo "xdebug.remote_mode=req" >> local.ini
+RUN docker-php-ext-install mysqli pdo pdo_mysql exif pcntl
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Create system user to run Composer and Artisan Commands
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN adduser --disabled-password -u $uid -h "/home/$user" "$user"
+	
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
