@@ -9,8 +9,6 @@ services:
       args:
         user: bible
         uid: 1000
-    depends_on:
-      - proxy
     deploy:
       replicas: 1
       endpoint_mode: dnsrr
@@ -30,8 +28,6 @@ services:
   #Production Nginx Service
   bible_web_prod:
     image: nginx:alpine
-    depends_on:
-      - proxy
     deploy:
       replicas: 1
       endpoint_mode: dnsrr
@@ -53,8 +49,6 @@ services:
       args:
         user: bible
         uid: 1000
-    depends_on:
-      - proxy
     container_name: app_dev
     restart: unless-stopped
     tty: true
@@ -71,8 +65,6 @@ services:
   #Production Nginx Service
   bible_web_dev:
     image: nginx:alpine
-    depends_on:
-      - proxy
     container_name: nginx_dev
     restart: unless-stopped
     tty: true
