@@ -3,6 +3,7 @@ services:
 
   #Production PHP Service
   app_prod:
+    image: bible_app_prod:latest
     build:
       context: .
       dockerfile: ../dockerfiles/php80.dockerfile
@@ -23,7 +24,6 @@ services:
       - ./.docker/php/local.conf:/usr/local/etc/php-fpm.d/local.conf
     networks:
       - overlay
-      - inside
 
   #Production Nginx Service
   nginx_prod:
@@ -38,10 +38,10 @@ services:
       - ./.docker/nginx/conf.production/:/etc/nginx/conf.d/
     networks:
       - overlay
-      - inside
 
   #Production PHP Service
   app_dev:
+    image: bible_app_dev:latest
     build:
       context: .
       dockerfile: ../dockerfiles/php80.dockerfile
@@ -59,7 +59,6 @@ services:
       - ./.docker/php/local.conf:/usr/local/etc/php-fpm.d/local.conf
     networks:
       - overlay
-      - inside
 
   #Production Nginx Service
   nginx_dev:
@@ -71,10 +70,10 @@ services:
       - ./.docker/nginx/conf.development/:/etc/nginx/conf.d/
     networks:
       - overlay
-      - inside
 
   #Haproxy
   proxy:
+    image: bible_proxy:latest
     build:
       context: ./.docker/haproxy
       dockerfile: ../../../dockerfiles/haproxy.dockerfile
@@ -98,5 +97,3 @@ networks:
   overlay:
     driver: overlay
     attachable: true
-  inside:
-    driver: bridge    
