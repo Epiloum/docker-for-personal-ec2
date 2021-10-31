@@ -28,5 +28,5 @@ echo "    Docker Stack Deploy"
 echo "==========================="
 sleep 3
 docker-compose -f docker-compose.yml config > docker-compose-out.yml
-docker stack deploy -c docker-compose-out.yml bible
+docker stack deploy -c docker-compose-out.yml epiloum
 rm docker-compose-out.yml
