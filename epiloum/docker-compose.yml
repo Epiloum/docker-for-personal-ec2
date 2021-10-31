@@ -30,12 +30,12 @@ services:
     deploy:
       replicas: 1
       endpoint_mode: dnsrr
-    restart: always
+    restart: unless-stopped
     tty: true
     user: root
-    working_dir: /var/www
+    working_dir: /var/www/public
     volumes:
-      - ${PATH_WIDGET}:/var/www
+      - ${PATH_WIDGET}:/var/www/public
       - ./.docker/php/local.ini:/usr/local/etc/php/conf.widget/local.ini
       - ./.docker/php/local.conf:/usr/local/etc/php-fpm.d/local.conf
     networks:
@@ -47,10 +47,10 @@ services:
     deploy:
       replicas: 1
       endpoint_mode: dnsrr
-    restart: always
+    restart: unless-stopped
     tty: true
     volumes:
-      - ${PATH_WIDGET}:/var/www
+      - ${PATH_WIDGET}:/var/www/public
       - ./.docker/nginx/conf.widget/:/etc/nginx/conf.d/
     networks:
       - overlay
@@ -67,12 +67,12 @@ services:
     deploy:
       replicas: 1
       endpoint_mode: dnsrr
-    restart: always
+    restart: unless-stopped
     tty: true
     user: root
-    working_dir: /var/www
+    working_dir: /var/www/public
     volumes:
-      - ${PATH_SANDBOX}:/var/www
+      - ${PATH_SANDBOX}:/var/www/public
       - ./.docker/php/local.ini:/usr/local/etc/php/conf.widget/local.ini
       - ./.docker/php/local.conf:/usr/local/etc/php-fpm.d/local.conf
     networks:
@@ -84,10 +84,10 @@ services:
     deploy:
       replicas: 1
       endpoint_mode: dnsrr
-    restart: always
+    restart: unless-stopped
     tty: true
     volumes:
-      - ${PATH_SANDBOX}:/var/www
+      - ${PATH_SANDBOX}:/var/www/public
       - ./.docker/nginx/conf.sandbox/:/etc/nginx/conf.d/
     networks:
       - overlay
