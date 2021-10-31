@@ -56,7 +56,7 @@ services:
       - overlay
 
   #Sandbox
-  sandbox_web:
+  sandbox_php:
     image: sandbox_php:latest
     build:
       context: .
