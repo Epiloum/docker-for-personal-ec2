@@ -30,7 +30,7 @@ services:
     deploy:
       replicas: 1
       endpoint_mode: dnsrr
-    restart: unless-stopped
+    restart: always
     tty: true
     user: root
     working_dir: /var/www
@@ -47,7 +47,7 @@ services:
     deploy:
       replicas: 1
       endpoint_mode: dnsrr
-    restart: unless-stopped
+    restart: always
     tty: true
     volumes:
       - ${PATH_WIDGET}:/var/www
@@ -67,7 +67,7 @@ services:
     deploy:
       replicas: 1
       endpoint_mode: dnsrr
-    restart: unless-stopped
+    restart: always
     tty: true
     user: root
     working_dir: /var/www
@@ -84,7 +84,7 @@ services:
     deploy:
       replicas: 1
       endpoint_mode: dnsrr
-    restart: unless-stopped
+    restart: always
     tty: true
     volumes:
       - ${PATH_SANDBOX}:/var/www
