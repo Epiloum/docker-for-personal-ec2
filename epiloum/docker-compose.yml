@@ -33,9 +33,9 @@ services:
     restart: unless-stopped
     tty: true
     user: root
-    working_dir: /var/www/public
+    working_dir: /var/www/html
     volumes:
-      - ${PATH_WIDGET}:/var/www/public
+      - ${PATH_WIDGET}:/var/www/html
       - ./.docker/php/local.ini:/usr/local/etc/php/conf.widget/local.ini
       - ./.docker/php/local.conf:/usr/local/etc/php-fpm.d/local.conf
     networks:
@@ -50,7 +50,7 @@ services:
     restart: unless-stopped
     tty: true
     volumes:
-      - ${PATH_WIDGET}:/var/www/public
+      - ${PATH_WIDGET}:/var/www/html
       - ./.docker/nginx/conf.widget/:/etc/nginx/conf.d/
     networks:
       - overlay
@@ -70,9 +70,9 @@ services:
     restart: unless-stopped
     tty: true
     user: root
-    working_dir: /var/www/public
+    working_dir: /var/www/html
     volumes:
-      - ${PATH_SANDBOX}:/var/www/public
+      - ${PATH_SANDBOX}:/var/www/html
       - ./.docker/php/local.ini:/usr/local/etc/php/conf.widget/local.ini
       - ./.docker/php/local.conf:/usr/local/etc/php-fpm.d/local.conf
     networks:
@@ -87,7 +87,7 @@ services:
     restart: unless-stopped
     tty: true
     volumes:
-      - ${PATH_SANDBOX}:/var/www/public
+      - ${PATH_SANDBOX}:/var/www/html
       - ./.docker/nginx/conf.sandbox/:/etc/nginx/conf.d/
     networks:
       - overlay
