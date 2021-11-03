@@ -13,6 +13,8 @@ echo "==========================="
 sleep 3
 docker image prune -f
 sleep 3
+docker-compose pull
+sleep 3
 docker-compose build --no-cache
 
 # swarm mode on
