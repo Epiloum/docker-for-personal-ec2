@@ -18,8 +18,6 @@ services:
       WORDPRESS_DB_USER: ${DB_USER}
       WORDPRESS_DB_PASSWORD: ${DB_PSWD}
       WORDPRESS_DB_NAME: ${DB_NAME}
-    volumes:
-      - ${PATH_BLOG}:/var/www/html
     networks:
       - overlay
 
