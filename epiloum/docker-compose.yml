@@ -1,6 +1,5 @@
-version: '3.8'
+version: "3.8"
 services:
-
   #Epiloum Dev Blog
   blog_web:
     image: wordpress:5.8.1
@@ -8,11 +7,6 @@ services:
       replicas: 1
       endpoint_mode: dnsrr
     restart: always
-    ports:
-      - target: 80
-        published: 8081
-        protocol: tcp
-        mode: host
     environment:
       WORDPRESS_DB_HOST: ${DB_HOST}
       WORDPRESS_DB_USER: ${DB_USER}
@@ -33,11 +27,6 @@ services:
     deploy:
       replicas: 1
       endpoint_mode: dnsrr
-    ports:
-      - target: 9000
-        published: 9002
-        protocol: tcp
-        mode: host
     restart: always
     tty: true
     user: root
@@ -56,11 +45,6 @@ services:
       replicas: 1
       endpoint_mode: dnsrr
     restart: always
-    ports:
-      - target: 80
-        published: 8082
-        protocol: tcp
-        mode: host
     tty: true
     volumes:
       - ${PATH_WIDGET}:/var/www/html
@@ -81,11 +65,6 @@ services:
       replicas: 1
       endpoint_mode: dnsrr
     restart: always
-    ports:
-      - target: 9000
-        published: 9003
-        protocol: tcp
-        mode: host
     tty: true
     user: root
     working_dir: /var/www/html
@@ -103,11 +82,6 @@ services:
       replicas: 1
       endpoint_mode: dnsrr
     restart: unless-stopped
-    ports:
-      - target: 80
-        published: 8083
-        protocol: tcp
-        mode: host
     tty: true
     volumes:
       - ${PATH_SANDBOX}:/var/www/html
