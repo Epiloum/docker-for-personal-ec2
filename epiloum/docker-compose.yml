@@ -13,6 +13,8 @@ services:
       WORDPRESS_DB_PASSWORD: ${DB_PSWD}
       WORDPRESS_DB_NAME: ${DB_NAME}
       WORDPRESS_TABLE_PREFIX: dev_
+    volumes:
+      - ${PATH_BLOG}/wp-content:/var/www/html/wp-content
     networks:
       - overlay
 
