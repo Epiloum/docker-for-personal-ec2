@@ -192,7 +192,7 @@ services:
 
   #PhpMyAdmin
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
+    image: arm64v8/phpmyadmin:latest
     deploy:
       replicas: 1
       endpoint_mode: dnsrr
