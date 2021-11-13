@@ -4,6 +4,7 @@
 echo "---------------------------"
 echo "      Docker Swarm Off"
 echo "==========================="
+docker stack rm epiloum
 docker swarm leave -f
 
 # docker compose build
