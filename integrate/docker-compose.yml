@@ -140,6 +140,9 @@ services:
       args:
         user: bible
         uid: 1000
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
     restart: always
     tty: true
     user: root
@@ -155,6 +158,9 @@ services:
   #Production Nginx Service
   bible_dev_nginx:
     image: nginx:alpine
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
     restart: always
     tty: true
     volumes:
@@ -187,6 +193,9 @@ services:
   #PhpMyAdmin
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
     ports:
       - target: 80
         published: 49080
