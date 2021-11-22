@@ -171,10 +171,12 @@ services:
 
   #Haproxy
   proxy:
-    image: epiloum_proxy:latest
-    build:
-      context: ./.docker/haproxy
-      dockerfile: ../../../dockerfiles/haproxy.dockerfile
+    image: haproxy:2.4.7-alpine
+#    build:
+#      context: ./.docker/haproxy
+#      dockerfile: ../../../dockerfiles/haproxy.dockerfile
+    volumes:
+      - ./.docker/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
     deploy:
       mode: global
     ports:
