@@ -85,7 +85,7 @@ services:
     deploy:
       replicas: 1
       endpoint_mode: dnsrr
-    restart: unless-stopped
+    restart: always
     tty: true
     volumes:
       - ${PATH_SANDBOX}:/var/www/html
@@ -93,12 +93,90 @@ services:
     networks:
       - overlay
 
+  #Production PHP Service
+  bible_prod_php:
+    image: bible_prod_php:latest
+    build:
+      context: .
+      dockerfile: ../dockerfiles/php80.dockerfile
+      args:
+        user: bible
+        uid: 1000
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+    restart: always
+    tty: true
+    user: root
+    working_dir: /var/www
+    volumes:
+      - ${PATH_BIBLE}:/var/www
+      - ./.docker/bible_laravel/.env:/var/www/.env
+      - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./.docker/php/local.conf:/usr/local/etc/php-fpm.d/local.conf
+    networks:
+      - overlay
+
+  #Production Nginx Service
+  bible_prod_nginx:
+    image: nginx:alpine
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+    restart: always
+    tty: true
+    volumes:
+      - ${PATH_BIBLE}:/var/www
+      - ./.docker/nginx/conf.bible.production/:/etc/nginx/conf.d/
+    networks:
+      - overlay
+
+  #Production PHP Service
+  bible_dev_php:
+    image: bible_dev_php:latest
+    build:
+      context: .
+      dockerfile: ../dockerfiles/php80.dockerfile
+      args:
+        user: bible
+        uid: 1000
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+    restart: always
+    tty: true
+    user: root
+    working_dir: /var/www
+    volumes:
+      - ${PATH_BIBLE_DEV}:/var/www
+      - ./.docker/bible_laravel/.env:/var/www/.env
+      - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./.docker/php/local.conf:/usr/local/etc/php-fpm.d/local.conf
+    networks:
+      - overlay
+
+  #Production Nginx Service
+  bible_dev_nginx:
+    image: nginx:alpine
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+    restart: always
+    tty: true
+    volumes:
+      - ${PATH_BIBLE_DEV}:/var/www
+      - ./.docker/nginx/conf.bible.development/:/etc/nginx/conf.d/
+    networks:
+      - overlay
+
   #Haproxy
   proxy:
-    image: epiloum_proxy:latest
-    build:
-      context: ./.docker/haproxy
-      dockerfile: ../../../dockerfiles/haproxy.dockerfile
+    image: haproxy:2.4.7-alpine
+#    build:
+#      context: ./.docker/haproxy
+#      dockerfile: ../../../dockerfiles/haproxy.dockerfile
+    volumes:
+      - ./.docker/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
     deploy:
       mode: global
     ports:
@@ -116,7 +194,10 @@ services:
 
   #PhpMyAdmin
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
+    image: arm64v8/phpmyadmin:latest
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
     ports:
       - target: 80
         published: 49080
